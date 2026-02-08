@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<AnchorPane prefHeight="800.0"
+            prefWidth="1100.0"
+            stylesheets="@../../../../styles/rentpage.css"
+            xmlns="http://javafx.com/javafx/8.0.141"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="allController.EquipmentListController">
+
+    <!-- HEADER -->
+    <HBox alignment="CENTER_LEFT"
+          prefHeight="60"
+          prefWidth="1100"
+          spacing="15"
+          style="-fx-background-color:#294d90; -fx-padding:10;">
+
+        <ImageView fitHeight="48" fitWidth="48" preserveRatio="true">
+            <image>
+                <Image url="@/images/icons/cube.png"/>
+            </image>
+        </ImageView>
+        <Label text="Equipment List"
+               style="-fx-font-size:20px; -fx-font-weight:bold; -fx-text-fill:white;"/>
+    </HBox>
+
+    <!-- MAIN CONTENT -->
+    <VBox spacing="15"
+          style="-fx-padding:20;"
+          AnchorPane.topAnchor="60"
+          AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0"
+          AnchorPane.bottomAnchor="0">
+
+        <!-- TABLE -->
+        <TableView fx:id="equipmentTable" VBox.vgrow="ALWAYS">
+
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+
+            <columns>
+                <TableColumn fx:id="colId" text="Equipment ID" minWidth="120"/>
+                <TableColumn fx:id="colName" text="Name" minWidth="150"/>
+                <TableColumn fx:id="colCategory" text="Category" minWidth="120"/>
+                <TableColumn fx:id="colManufacturer" text="Manufacturer" minWidth="140"/>
+                <TableColumn fx:id="colSerial" text="Serial No" minWidth="120"/>
+                <TableColumn fx:id="colPrice" text="Rent Price" minWidth="100"/>
+                <TableColumn fx:id="colCondition" text="Condition" minWidth="100"/>
+            </columns>
+        </TableView>
+
+        <!-- ACTION BUTTONS -->
+        <HBox alignment="CENTER_RIGHT" spacing="12">
+            <Button fx:id="addBtn" text="Add Equipment"/>
+            <Button fx:id="editBtn" text="Edit"/>
+            <Button fx:id="deleteBtn" text="Delete"/>
+        </HBox>
+
+    </VBox>
+
+</AnchorPane>

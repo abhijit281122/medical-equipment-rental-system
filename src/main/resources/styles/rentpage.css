@@ -1,0 +1,157 @@
+/* GENERAL CONTAINERS */
+.root {
+    -fx-background-color: #f4f4f4;
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+
+/* TITLE */
+.label {
+    -fx-text-fill: #21365d;
+    -fx-font-weight: bold;
+}
+
+/* FORM FIELDS */
+.text-field, .combo-box, .date-picker {
+    -fx-background-color: white;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-border-color: #d0d0d0;
+    -fx-border-width: 1px;
+    -fx-padding: 6px 8px;
+}
+
+.text-field:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: #294d90;
+    -fx-border-width: 2px;
+}
+
+/* TABLE */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 4);
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #294d90;
+}
+
+.table-view {
+    -fx-background-color: white;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 4);
+}
+
+.table-view .column-header-background,
+.table-view .column-header-background > .filler {
+    -fx-background-color: #294d90;
+    -fx-background-radius: 12 12 0 0;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+
+/* BUTTONS */
+.button {
+    -fx-background-color: #294d90;
+    -fx-text-fill: white;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 18px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #1c2a4a;
+}
+
+/* BUTTONS ADDITIONAL STYLES */
+#rentClearBtn {
+    -fx-background-color: #ff4757;
+}
+
+#rentClearBtn:hover {
+    -fx-background-color: #ff6b81;
+}
+
+/* HBOX BUTTON CONTAINER */
+.hbox {
+    -fx-spacing: 12px;
+    -fx-alignment: center-right;
+    -fx-padding: 10 0 0 0;
+}
+
+/* LABEL NOTE */
+.label-note {
+    -fx-text-fill: #777;
+    -fx-font-size: 11px;
+    -fx-padding: 5 0 0 0;
+}
+
+/* PRINT CHALLAN BUTTON */
+#rentPrintBtn {
+    -fx-background-color: #ff9f00;  /* Orange color to stand out */
+    -fx-text-fill: white;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 18px;
+    -fx-cursor: hand;
+}
+
+#rentPrintBtn:hover {
+    -fx-background-color: #e68a00; /* Darker orange on hover */
+}
+
+/* ----------------------------------------------------
+   TABLE VIEW ENHANCEMENTS (Add rows + better visuals)
+-----------------------------------------------------*/
+
+/* Fixed row height for visible 4–5 rows */
+.table-row-cell {
+    -fx-cell-size: 30px;
+    -fx-background-color: white;
+}
+
+/* Hover effect */
+.table-row-cell:filled:hover {
+    -fx-background-color: #e8f0ff;
+}
+
+/* Selected row */
+.table-row-cell:filled:selected {
+    -fx-background-color: #cddcff;
+}
+
+/* Table corner + scroll region rounding */
+.table-view .virtual-flow > .corner {
+    -fx-background-color: transparent;
+}
+
+/* Allow table to keep height even if no data */
+.table-view:row-selection .virtual-flow .clipped-container .sheet .table-row-cell {
+    -fx-opacity: 1;               /* required for visible empty rows */
+}
+
+/* Scrollbar styling */
+.table-view .scroll-bar:vertical,
+.table-view .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.table-view .thumb {
+    -fx-background-color: #b4c2d1;
+    -fx-background-radius: 5px;
+}
+
+.table-view .thumb:hover {
+    -fx-background-color: #8ea3b9;
+}
+
+

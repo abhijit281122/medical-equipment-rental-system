@@ -1,0 +1,74 @@
+/* ---------------------------
+   LEFT PANEL
+----------------------------*/
+.left-form {
+    -fx-background-color: linear-gradient(to bottom right, #21365d, #294d90);
+    -fx-border-color: transparent;
+}
+
+.left-title {
+    -fx-font-size: 20px;
+    -fx-font-family: "Segoe UI";
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+/* ---------------------------
+   RIGHT LOGIN FORM
+----------------------------*/
+.right-form {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 4);
+}
+
+/* USER ICON */
+.user-icon {
+    -fx-fill: #21365d;
+}
+
+/* SIGN IN LABEL */
+.signin-label {
+    -fx-font-family: "Berlin Sans FB";
+    -fx-font-size: 28px;
+    -fx-text-fill: #21365d;
+    -fx-font-weight: bold;
+}
+
+/* TEXTFIELDS */
+.textfield {
+    -fx-background-color: #f4f4f4;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: #ccc;
+    -fx-font-size: 14px;
+    -fx-padding: 6px 10px;
+}
+.textfield:focused {
+    -fx-border-color: #294d90;
+    -fx-border-width: 1.5px;
+    -fx-background-color: #ffffff;
+}
+
+/* LOGIN BUTTON */
+.login-btn {
+    -fx-background-color: linear-gradient(to top, #21365d, #294d90);
+    -fx-text-fill: white;
+    -fx-background-radius: 10px;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.login-btn:hover {
+    -fx-background-color: linear-gradient(to top, #284a86, #446ebb);
+}
+
+/* CLOSE BUTTON */
+.close {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+.close:hover {
+    -fx-background-color: #ff4757;
+    -fx-text-fill: white;
+}

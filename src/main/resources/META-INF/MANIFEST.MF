@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Main-Class: com.equipment.rental.equipmentrentalsystem2025.Main
+

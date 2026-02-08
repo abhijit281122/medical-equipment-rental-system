@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.HBox?>
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0"
+           xmlns="http://javafx.com/javafx/8.0.141"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="allController.LoginController"
+           stylesheets="@/styles/loginDesign.css">
+
+    <children>
+        <AnchorPane fx:id="main_form" prefHeight="450.0" prefWidth="700.0">
+
+            <!-- LEFT PANEL -->
+            <AnchorPane prefHeight="450.0" prefWidth="350.0" styleClass="left-form">
+                <children>
+                    <ImageView fitHeight="220.0" fitWidth="300.0" layoutX="25.0" layoutY="50.0" preserveRatio="true">
+                        <image>
+                            <Image url="@../../../../images/Heart-Monitor.png"/>
+                        </image>
+                    </ImageView>
+                    <Label layoutX="20.0" layoutY="300.0" prefHeight="65.0" prefWidth="310.0"
+                           text="Equipment Rental System" textFill="WHITE" wrapText="true" styleClass="left-title"/>
+                </children>
+            </AnchorPane>
+
+            <!-- RIGHT LOGIN FORM -->
+            <!-- RIGHT LOGIN FORM -->
+            <AnchorPane layoutX="350.0" prefHeight="450.0" prefWidth="350.0" styleClass="right-form">
+
+                <!-- Top User Icon -->
+                <ImageView fitHeight="64" fitWidth="64"
+                           layoutX="143" layoutY="40"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@/images/icons/users.png"/>
+                    </image>
+                </ImageView>
+
+                <Label layoutX="130.0" layoutY="120.0"
+                       text="Sign In"
+                       styleClass="signin-label"/>
+
+                <!-- Username Field with Icon -->
+                <HBox layoutX="55" layoutY="170" spacing="10" alignment="CENTER_LEFT">
+                    <ImageView fitHeight="20" fitWidth="20" preserveRatio="true">
+                        <image>
+                            <Image url="@/images/icons/users.png"/>
+                        </image>
+                    </ImageView>
+
+                    <TextField fx:id="username"
+                               prefHeight="35"
+                               prefWidth="220"
+                               promptText="Username"
+                               styleClass="textfield"/>
+                </HBox>
+
+                <!-- Password Field with Icon -->
+                <HBox layoutX="55" layoutY="225" spacing="10" alignment="CENTER_LEFT">
+                    <ImageView fitHeight="20" fitWidth="20" preserveRatio="true">
+                        <image>
+                            <Image url="@/images/icons/lock.png"/>
+                        </image>
+                    </ImageView>
+
+                    <PasswordField fx:id="password"
+                                   prefHeight="35"
+                                   prefWidth="220"
+                                   promptText="Password"
+                                   styleClass="textfield"/>
+                </HBox>
+
+                <!-- Login Button -->
+                <Button fx:id="loginBtn"
+                        layoutX="103"
+                        layoutY="290"
+                        prefHeight="45"
+                        prefWidth="147"
+                        text="Login"
+                        styleClass="login-btn"
+                        onAction="#loginAdmin"/>
+
+                <!-- Close Button -->
+                <Button fx:id="close"
+                        layoutX="310"
+                        layoutY="10"
+                        styleClass="close"
+                        onAction="#close">
+                    <graphic>
+                        <ImageView fitHeight="18" fitWidth="18" preserveRatio="true">
+                            <image>
+                                <Image url="@/images/icons/close.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+            </AnchorPane>
+
+        </AnchorPane>
+    </children>
+</StackPane>
+
+
