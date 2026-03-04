@@ -1,241 +1,299 @@
 package allController;
 
-import allDao.EmployeeDAO;
 import allModels.Employee;
+import dbUtils.Database;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.sql.SQLException;
+import java.sql.*;
 
 public class EmployeeController {
 
+    @FXML
+    private TextField codeField, nameField, phoneField,
+            emailField, salaryField, searchField;
+    @FXML
+    private TextArea addressField;
+    @FXML
+    private DatePicker joiningDatePicker;
+    @FXML
+    private ComboBox<String> roleComboBox, statusComboBox, roleFilterCombo;
+    @FXML
+    private TableView<Employee> employeeTable;
+    @FXML
+    private TableColumn<Employee, Integer> colId;
+    @FXML
+    private TableColumn<Employee, String> colCode, colName,
+            colPhone, colRole, colStatus;
+    @FXML
+    private TableColumn<Employee, Double> colSalary;
+    @FXML
+    private Pagination pagination;
 
-    // ---------- FORM FIELDS ----------
-    @FXML
-    private TextField codeField;
-    @FXML
-    private TextField nameField;
-    @FXML
-    private TextField roleField;
-    @FXML
-    private TextField phoneField;
-    @FXML
-    private TextField emailField;
-    @FXML
-    public TextArea addressField;
+    private final Connection conn = Database.getInstance().getConnection();
+    private static final int ROWS_PER_PAGE = 10;
 
-    // ---------- TABLE ----------
-    @FXML
-    private TableView<Employee> table;
-    @FXML
-    private TableColumn<Employee, String> codeCol;
-    @FXML
-    private TableColumn<Employee, String> nameCol;
-    @FXML
-    private TableColumn<Employee, String> roleCol;
-    @FXML
-    private TableColumn<Employee, String> phoneCol;
-    @FXML
-    private TableColumn<Employee, String> emailCol;
-    @FXML
-    public TableColumn<Employee, String> addressCol;
+    private ObservableList<Employee> masterList = FXCollections.observableArrayList();
+    private Employee selectedEmployee = null;
 
-    private final String loggedInUser = "admin";
-    private boolean updateConfirmed = false;
-
-    // ---------- INIT ----------
     @FXML
-    public void initialize() throws SQLException {
-        if (codeCol != null) codeCol.setCellValueFactory(new PropertyValueFactory<>("employeeCode"));
-        if (nameCol != null) nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        if (roleCol != null) roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
-        if (phoneCol != null) phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        if (emailCol != null) emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
-        if (addressCol != null) addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+    public void initialize() {
+
+        loadRoles();
+        statusComboBox.setItems(FXCollections.observableArrayList("Active", "Inactive"));
+
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colCode.setCellValueFactory(new PropertyValueFactory<>("employeeCode"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+        colPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        colRole.setCellValueFactory(new PropertyValueFactory<>("roleName"));
+        colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        formatSalaryColumn();
+        styleStatusColumn();
 
         loadEmployees();
-        enableCreateMode(); // 👈 important
 
-        if (table != null && table.getSelectionModel() != null) {
-            table.getSelectionModel().selectedItemProperty().addListener(
-                    (obs, oldVal, selected) -> populateForm(selected)
-            );
-        }
-    }
-
-    // ---------- LOAD ----------
-    private void loadEmployees() throws SQLException {
-        if (table != null) {
-            table.setItems(EmployeeDAO.getAllActiveEmployees());
-        }
-    }
-
-    // ---------- POPULATE FORM ----------
-    private void populateForm(Employee e) {
-        if (e == null) return;
-
-        if (codeField != null) codeField.setText(e.getEmployeeCode());
-        if (nameField != null) nameField.setText(e.getName());
-        if (roleField != null) roleField.setText(e.getRole());
-        if (phoneField != null) phoneField.setText(e.getPhone());
-        if (emailField != null) emailField.setText(e.getEmail());
-        if (addressField != null) addressField.setText(e.getAddress());
-
-        enableReadOnlyMode();   // 🔒 lock on select
-        updateConfirmed = false;
-    }
-
-    // ---------- CREATE ----------
-    @FXML
-    void saveEmployee() {
-        try {
-            Employee e = new Employee(
-                    0,
-                    codeField != null ? codeField.getText() : "",
-                    nameField != null ? nameField.getText() : "",
-                    roleField != null ? roleField.getText() : "",
-                    phoneField != null ? phoneField.getText() : "",
-                    emailField != null ? emailField.getText() : "",
-                    addressField != null ? addressField.getText() : "",
-                    true
-            );
-
-            EmployeeDAO.saveEmployee(e, loggedInUser);
-            showInfo("Employee saved successfully");
-
-            clearForm();
-            loadEmployees();
-
-        } catch (Exception e) {
-            showError(e.getMessage());
-        }
-    }
-
-    // ---------- UPDATE WITH CONFIRM ----------
-    @FXML
-    void updateEmployee() {
-        if (table == null || table.getSelectionModel() == null) {
-            showError("Table not initialized properly");
-            return;
-        }
-
-        Employee selected = table.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            showError("Please select an employee first");
-            return;
-        }
-
-        // Step 1: confirmation
-        if (!updateConfirmed) {
-            Alert alert = new Alert(
-                    Alert.AlertType.CONFIRMATION,
-                    "Do you want to edit this employee?\nFields will be unlocked.",
-                    ButtonType.YES, ButtonType.NO
-            );
-
-            if (alert.showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
-                unlockFormForUpdate();
-                updateConfirmed = true;
+        employeeTable.getSelectionModel().selectedItemProperty().addListener((obs, old, emp) -> {
+            if (emp != null) {
+                selectedEmployee = emp;
+                fillForm(emp);
             }
-            return;
+        });
+
+        pagination.setPageFactory(this::createPage);
+    }
+
+    /* ==============================
+       LOAD DATA
+    ============================== */
+
+    private void loadRoles() {
+        ObservableList<String> roles = FXCollections.observableArrayList("All Roles");
+
+        try (Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery("SELECT role_name FROM employee_role")) {
+
+            while (rs.next()) {
+                roles.add(rs.getString("role_name"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        // Step 2: update
+        roleComboBox.setItems(roles.filtered(r -> !r.equals("All Roles")));
+        roleFilterCombo.setItems(roles);
+        roleFilterCombo.setValue("All Roles");
+    }
+
+    private void loadEmployees() {
+
+        masterList.clear();
+
+        String sql = "SELECT e.*, r.role_name FROM employee e JOIN employee_role r ON e.role_id = r.id WHERE e.is_deleted = 0 ORDER BY e.id DESC";
+
+        try (Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+
+            while (rs.next()) {
+                masterList.add(new Employee(
+                        rs.getInt("id"),
+                        rs.getString("employee_code"),
+                        rs.getString("full_name"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("address"),
+                        rs.getDate("joining_date") != null ?
+                                rs.getDate("joining_date").toLocalDate() : null,
+                        rs.getDouble("salary"),
+                        rs.getString("role_name"),
+                        rs.getString("status")
+                ));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        updatePagination();
+    }
+
+    /* ==============================
+       CRUD
+    ============================== */
+
+    @FXML
+    private void saveEmployee() {
+
         try {
-            if (nameField != null) selected.setName(nameField.getText());
-            if (roleField != null) selected.setRole(roleField.getText());
-            if (phoneField != null) selected.setPhone(phoneField.getText());
-            if (emailField != null) selected.setEmail(emailField.getText());
-            if (addressField != null) selected.setAddress(addressField.getText());
 
-            EmployeeDAO.updateEmployee(selected, loggedInUser);
+            String roleQuery = "SELECT id FROM employee_role WHERE role_name=?";
+            PreparedStatement roleStmt = conn.prepareStatement(roleQuery);
+            roleStmt.setString(1, roleComboBox.getValue());
+            ResultSet roleRs = roleStmt.executeQuery();
 
-            showInfo("Employee updated successfully");
+            if (!roleRs.next()) return;
+            int roleId = roleRs.getInt("id");
+
+            if (selectedEmployee == null) {
+
+                String insert = "INSERT INTO employee (employee_code, full_name, phone, email, address, joining_date, salary, role_id, status) VALUES (?,?,?,?,?,?,?,?,?)";
+
+                PreparedStatement ps = conn.prepareStatement(insert);
+                ps.setString(1, codeField.getText());
+                ps.setString(2, nameField.getText());
+                ps.setString(3, phoneField.getText());
+                ps.setString(4, emailField.getText());
+                ps.setString(5, addressField.getText());
+                ps.setDate(6, Date.valueOf(joiningDatePicker.getValue()));
+                ps.setDouble(7, Double.parseDouble(salaryField.getText()));
+                ps.setInt(8, roleId);
+                ps.setString(9, statusComboBox.getValue());
+                ps.executeUpdate();
+
+            } else {
+
+                String update = "UPDATE employee SET full_name=?, phone=?, email=?, address=?, joining_date=?, salary=?, role_id=?, status=? WHERE id=?";
+
+                PreparedStatement ps = conn.prepareStatement(update);
+                ps.setString(1, nameField.getText());
+                ps.setString(2, phoneField.getText());
+                ps.setString(3, emailField.getText());
+                ps.setString(4, addressField.getText());
+                ps.setDate(5, Date.valueOf(joiningDatePicker.getValue()));
+                ps.setDouble(6, Double.parseDouble(salaryField.getText()));
+                ps.setInt(7, roleId);
+                ps.setString(8, statusComboBox.getValue());
+                ps.setInt(9, selectedEmployee.getId());
+                ps.executeUpdate();
+            }
+
+            clearForm();
+            loadEmployees();
+            pagination.setPageFactory(this::createPage);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void deleteEmployee() {
+
+        if (selectedEmployee == null) return;
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE employee SET is_deleted=1 WHERE id=?");
+            ps.setInt(1, selectedEmployee.getId());
+            ps.executeUpdate();
+
             clearForm();
             loadEmployees();
 
         } catch (Exception e) {
-            showError(e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    // ---------- DELETE (SOFT) ----------
+    /* ==============================
+       PAGINATION
+    ============================== */
+
+    private void updatePagination() {
+
+        int pageCount = (int) Math.ceil((double) masterList.size() / ROWS_PER_PAGE);
+        pagination.setPageCount(pageCount == 0 ? 1 : pageCount);
+
+        pagination.setPageFactory(this::createPage);
+    }
+
+    private TableView<Employee> createPage(int pageIndex) {
+
+        int from = pageIndex * ROWS_PER_PAGE;
+        int to = Math.min(from + ROWS_PER_PAGE, masterList.size());
+
+        employeeTable.setItems(FXCollections.observableArrayList(
+                masterList.subList(from, to)
+        ));
+
+        return employeeTable;
+    }
+
+    /* ==============================
+       UI ENHANCEMENTS
+    ============================== */
+
+    private void formatSalaryColumn() {
+
+        colSalary.setCellFactory(tc -> new TableCell<Employee, Double>() {
+
+            @Override
+            protected void updateItem(Double value, boolean empty) {
+                super.updateItem(value, empty);
+
+                if (empty || value == null) {
+                    setText(null);
+                } else {
+                    setText(String.format("₹ %,.2f", value));
+                }
+            }
+        });
+    }
+
+    private void styleStatusColumn() {
+
+        colStatus.setCellFactory(tc -> new TableCell<Employee, String>() {
+
+            @Override
+            protected void updateItem(String status, boolean empty) {
+                super.updateItem(status, empty);
+
+                if (empty || status == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(status);
+
+                    if (status.equalsIgnoreCase("Active")) {
+                        setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+                    } else {
+                        setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+                    }
+                }
+            }
+        });
+    }
+
+    private void fillForm(Employee emp) {
+        codeField.setText(emp.getEmployeeCode());
+        nameField.setText(emp.getFullName());
+        phoneField.setText(emp.getPhone());
+        emailField.setText(emp.getEmail());
+        addressField.setText(emp.getAddress());
+        joiningDatePicker.setValue(emp.getJoiningDate());
+        salaryField.setText(String.valueOf(emp.getSalary()));
+        roleComboBox.setValue(emp.getRoleName());
+        statusComboBox.setValue(emp.getStatus());
+    }
+
     @FXML
-    void deleteEmployee() throws SQLException {
-        if (table == null || table.getSelectionModel() == null) return;
-
-        Employee selected = table.getSelectionModel().getSelectedItem();
-        if (selected == null) return;
-
-        Alert alert = new Alert(
-                Alert.AlertType.CONFIRMATION,
-                "Soft delete this employee?",
-                ButtonType.YES, ButtonType.NO
-        );
-
-        if (alert.showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
-            EmployeeDAO.softDeleteEmployee(selected.getId(), loggedInUser);
-            showInfo("Employee deleted");
-
-            clearForm();
-            loadEmployees();
-        }
-    }
-
-    // ---------- CLEAR ----------
-    @FXML
-    void clearForm() {
-        if (codeField != null) codeField.clear();
-        if (nameField != null) nameField.clear();
-        if (roleField != null) roleField.clear();
-        if (phoneField != null) phoneField.clear();
-        if (emailField != null) emailField.clear();
-        if (addressField != null) addressField.clear();
-
-        if (table != null && table.getSelectionModel() != null) {
-            table.getSelectionModel().clearSelection();
-        }
-        updateConfirmed = false;
-        enableCreateMode(); // ✅ VERY IMPORTANT
-    }
-
-    // ---------- FORM MODES ----------
-    private void enableCreateMode() {
-        if (codeField != null) codeField.setDisable(false);
-        if (nameField != null) nameField.setDisable(false);
-        if (roleField != null) roleField.setDisable(false);
-        if (phoneField != null) phoneField.setDisable(false);
-        if (emailField != null) emailField.setDisable(false);
-        if (addressField != null) addressField.setDisable(false);
-    }
-
-    private void enableReadOnlyMode() {
-        if (codeField != null) codeField.setDisable(true);
-        if (nameField != null) nameField.setDisable(true);
-        if (roleField != null) roleField.setDisable(true);
-        if (phoneField != null) phoneField.setDisable(true);
-        if (emailField != null) emailField.setDisable(true);
-        if (addressField != null) addressField.setDisable(true);
-    }
-
-    private void unlockFormForUpdate() {
-        if (nameField != null) nameField.setDisable(false);
-        if (roleField != null) roleField.setDisable(false);
-        if (phoneField != null) phoneField.setDisable(false);
-        if (emailField != null) emailField.setDisable(false);
-        if (addressField != null) addressField.setDisable(false);
-        if (codeField != null) codeField.setDisable(true); // 🚫 never editable
-    }
-
-    // ---------- ALERTS ----------
-    private void showError(String msg) {
-        if (msg == null) msg = "Unknown error";
-        new Alert(Alert.AlertType.ERROR, msg).show();
-    }
-
-    private void showInfo(String msg) {
-        if (msg == null) msg = "Operation completed";
-        new Alert(Alert.AlertType.INFORMATION, msg).show();
+    private void clearForm() {
+        selectedEmployee = null;
+        codeField.clear();
+        nameField.clear();
+        phoneField.clear();
+        emailField.clear();
+        addressField.clear();
+        salaryField.clear();
+        joiningDatePicker.setValue(null);
+        roleComboBox.setValue(null);
+        statusComboBox.setValue(null);
+        employeeTable.getSelectionModel().clearSelection();
     }
 }

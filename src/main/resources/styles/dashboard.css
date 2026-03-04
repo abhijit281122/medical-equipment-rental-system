@@ -1,113 +1,100 @@
-/* SIDEBAR */
-.side-bar {
-    -fx-background-color: linear-gradient(to bottom, #1c2a4a, #294d90);
-    -fx-padding: 20;
-}
-
-.side-title-bar {
-    -fx-padding: 10 0;
-}
-
-.side-title {
-    -fx-text-fill: white;
-    -fx-font-size: 20;
-    -fx-font-weight: bold;
-}
-
-/* NAV BUTTONS */
-.nav-btn {
-    -fx-background-color: transparent;
-    -fx-text-fill: #dce3f5;
-    -fx-font-size: 15;
-    -fx-padding: 10 15;
-    -fx-cursor: hand;
-    -fx-alignment: CENTER_LEFT;
-}
-
-.nav-btn:hover {
-    -fx-background-color: rgba(255,255,255,0.15);
-    -fx-background-radius: 8;
-}
-
-/* HEADER */
-.top-bar {
-    -fx-background-color: white;
-    -fx-padding: 12 20;
-    -fx-border-color: #e0e0e0;
-    -fx-border-width: 0 0 1 0;
-}
-
-.username-label {
-    -fx-text-fill: #21365d;
-    -fx-font-weight: bold;
-    -fx-font-size: 14;
-}
-
-.logout-btn {
-    -fx-background-color: #ff4757;
-    -fx-text-fill: white;
-    -fx-padding: 6 18;
-    -fx-background-radius: 8;
-}
-
-.logout-btn:hover {
-    -fx-background-color: #ff6b81;
-}
-
-/* DASHBOARD CARDS */
-.dashboard-card {
-    -fx-background-color: white;
-    -fx-padding: 20;
-    -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 4);
-    -fx-alignment: CENTER;
-}
-
-.card-title {
-    -fx-text-fill: #7a7a7a;
-    -fx-font-size: 14;
-}
-
-.card-value {
-    -fx-text-fill: #21365d;
-    -fx-font-size: 28;
-    -fx-font-weight: bold;
-}
-
-.chart {
-    -fx-background-color: white;
-    -fx-padding: 15;
-    -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 4);
-}
-
+/* BACKGROUND */
 .page-bg {
     -fx-background-color: #f4f6f9;
 }
 
-.page-title {
-    -fx-font-size: 22;
+/* SIDEBAR */
+.side-bar {
+    -fx-background-color: linear-gradient(to bottom, #1c2a4a, #294d90);
+}
+
+.side-title {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
 }
 
-.card {
+/* NAVIGATION */
+.nav-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #dce3f5;
+    -fx-font-size: 14px;
+    -fx-padding: 10 15;
+    -fx-alignment: CENTER_LEFT;
+    -fx-max-width: Infinity;
+    -fx-cursor: hand;
+}
+
+.nav-btn:hover {
+    -fx-background-color: rgba(255,255,255,0.18);
+    -fx-background-radius: 8;
+}
+
+/* TOP BAR (same family as logout) */
+.top-bar {
+    -fx-background-color: linear-gradient(to right, #1c2a4a, #294d90);
+}
+
+/* USER LABEL */
+.top-bar {
+    -fx-background-color: linear-gradient(to right, #1c2a4a, #294d90);
+}
+
+.username-label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.logout-btn {
+    -fx-background-color: white;
+    -fx-text-fill: #ff4757;
+    -fx-background-radius: 6;
+    -fx-padding: 6 15;
+}
+
+.logout-btn:hover {
+    -fx-background-color: #ffeaea;
+}
+
+/* DASHBOARD CARDS (Red Accent Border) */
+.dashboard-card {
+    -fx-background-color: white;
+    -fx-padding: 25;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-width: 0 0 4 0;
+    -fx-border-color: #ff4757;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 4);
+
+    -fx-max-width: Infinity;   /* 🔥 IMPORTANT */
+}
+/* CARD TEXT */
+.card-title {
+    -fx-text-fill: #888;
+    -fx-font-size: 14px;
+}
+
+.card-value {
+    -fx-text-fill: #ff4757;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+/* CHART */
+.chart {
     -fx-background-color: white;
     -fx-background-radius: 12;
-    -fx-padding: 20;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 4);
-}
+    -fx-padding: 15;
+    -fx-border-radius: 12;
+    -fx-border-width: 0 0 4 0;
+    -fx-border-color: #ff4757;
 
-.btn-primary {
-    -fx-background-color: #2d6cdf;
-    -fx-text-fill: white;
-    -fx-background-radius: 6;
+    -fx-max-width: Infinity;
+    -fx-max-height: Infinity;
 }
-
-.btn-danger {
-    -fx-background-color: #e74c3c;
-    -fx-text-fill: white;
+.report-label {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-padding: 5 0 5 5;
 }
-.white-icon {
-    -fx-fill: white;
-}
-

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<StackPane prefHeight="500.0" prefWidth="900.0"
+           xmlns="http://javafx.com/javafx/8.0.141"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="allController.LoginController"
+           stylesheets="@/styles/loginDesign.css">
+
+    <HBox maxWidth="900" maxHeight="500"
+          styleClass="card-container">
+
+        <!-- LEFT PANEL -->
+        <VBox spacing="20"
+              alignment="CENTER"
+              HBox.hgrow="ALWAYS"
+              styleClass="left-form">
+
+            <ImageView fitHeight="200" preserveRatio="true">
+                <image>
+                    <Image url="@/images/Heart-Monitor.png"/>
+                </image>
+            </ImageView>
+
+            <Label text="Equipment Rental System"
+                   wrapText="true"
+                   styleClass="left-title"/>
+        </VBox>
+
+        <!-- RIGHT LOGIN FORM -->
+        <VBox spacing="20"
+              alignment="CENTER"
+              HBox.hgrow="ALWAYS"
+              styleClass="right-form">
+
+            <ImageView fitHeight="70" preserveRatio="true">
+                <image>
+                    <Image url="@/images/icons/users.png"/>
+                </image>
+            </ImageView>
+
+            <Label text="Sign In"
+                   styleClass="signin-label"/>
+
+            <!-- Username -->
+            <HBox spacing="10" alignment="CENTER_LEFT" styleClass="input-box">
+                <ImageView fitHeight="20" preserveRatio="true">
+                    <image>
+                        <Image url="@/images/icons/users.png"/>
+                    </image>
+                </ImageView>
+                <TextField fx:id="username"
+                           promptText="Username"
+                           styleClass="textfield"/>
+            </HBox>
+
+            <!-- Password -->
+            <HBox spacing="10" alignment="CENTER_LEFT" styleClass="input-box">
+                <ImageView fitHeight="20" preserveRatio="true">
+                    <image>
+                        <Image url="@/images/icons/lock.png"/>
+                    </image>
+                </ImageView>
+                <PasswordField fx:id="password"
+                               promptText="Password"
+                               styleClass="textfield"/>
+            </HBox>
+
+            <Button fx:id="loginBtn"
+                    text="Login"
+                    styleClass="login-btn"
+                    onAction="#loginAdmin"
+                    maxWidth="200"/>
+
+        </VBox>
+
+    </HBox>
+
+    <Button fx:id="close"
+            text="✕"
+            onAction="#closeApp"
+            styleClass="close-btn"
+            StackPane.alignment="TOP_RIGHT"
+            translateX="-15"
+            translateY="15"/>
+</StackPane>

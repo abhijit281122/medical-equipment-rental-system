@@ -1,107 +1,210 @@
 package allModels;
 
-import javafx.beans.property.*;
+import java.time.LocalDate;
 
 public class Rental {
 
-    private final IntegerProperty id = new SimpleIntegerProperty();
+    private int id;
+    private String challanNo;
 
-    private final StringProperty equipmentId = new SimpleStringProperty();
-    private final StringProperty machineName = new SimpleStringProperty();
+    private int machineUnitId;
+    private int customerId;
 
-    private final StringProperty patientName = new SimpleStringProperty();
-    private final StringProperty challanNo = new SimpleStringProperty();
-    private final StringProperty staffSeparation = new SimpleStringProperty();
+    private int createdBy;
+    private int deliveryPersonId;
+    private int rentCollectorId;
 
-    private final StringProperty rentReceivedDate = new SimpleStringProperty();
-    private final StringProperty rentCollectionDate = new SimpleStringProperty();
-    private final StringProperty rentEndDate = new SimpleStringProperty();
+    private LocalDate rentStartDate;
+    private LocalDate rentEndDate;
+    private LocalDate actualReturnDate;
 
-    private final StringProperty status = new SimpleStringProperty();
-    private final StringProperty collectedBy = new SimpleStringProperty();
+    private double price;
+    private int days;
 
-    // Amounts
-    private final DoubleProperty amount = new SimpleDoubleProperty();      // price of this rental
-    private final DoubleProperty totalAmount = new SimpleDoubleProperty(); // same as amount if single rental
-    private final DoubleProperty paidAmount = new SimpleDoubleProperty();
-    private final DoubleProperty dueAmount = new SimpleDoubleProperty();
+    private double totalAmount;
+    private double paidAmount;
+    private double dueAmount;
 
-    // Calculated (not stored)
-    private final StringProperty period = new SimpleStringProperty();
+    private String status;
+    private String remarks;
 
-    public Rental(int id,
-                  String equipmentId,
-                  String machineName,
-                  String patientName,
-                  String challanNo,
-                  String staffSeparation,
-                  String rentReceivedDate,
-                  String rentCollectionDate,
-                  String rentEndDate,
-                  String status,
-                  String collectedBy,
-                  double amount,
-                  double totalAmount,
-                  double paidAmount,
-                  double dueAmount,
-                  String period) {
+    private String createdAt;
+    private int isDeleted;
 
-        this.id.set(id);
-        this.equipmentId.set(equipmentId);
-        this.machineName.set(machineName);
+    // ================= CONSTRUCTOR =================
 
-        this.patientName.set(patientName);
-        this.challanNo.set(challanNo);
-        this.staffSeparation.set(staffSeparation);
-
-        this.rentReceivedDate.set(rentReceivedDate);
-        this.rentCollectionDate.set(rentCollectionDate);
-        this.rentEndDate.set(rentEndDate);
-
-        this.status.set(status);
-        this.collectedBy.set(collectedBy);
-
-        this.amount.set(amount);
-        this.totalAmount.set(totalAmount);
-        this.paidAmount.set(paidAmount);
-        this.dueAmount.set(dueAmount);
-
-        this.period.set(period);
+    public Rental() {
     }
 
-    // Property getters
-    public IntegerProperty idProperty() { return id; }
-    public StringProperty equipmentIdProperty() { return equipmentId; }
-    public StringProperty machineNameProperty() { return machineName; }
-    public StringProperty patientNameProperty() { return patientName; }
-    public StringProperty challanNoProperty() { return challanNo; }
-    public StringProperty staffSeparationProperty() { return staffSeparation; }
-    public StringProperty rentReceivedDateProperty() { return rentReceivedDate; }
-    public StringProperty rentCollectionDateProperty() { return rentCollectionDate; }
-    public StringProperty rentEndDateProperty() { return rentEndDate; }
-    public StringProperty statusProperty() { return status; }
-    public StringProperty collectedByProperty() { return collectedBy; }
-    public DoubleProperty amountProperty() { return amount; }
-    public DoubleProperty totalAmountProperty() { return totalAmount; }
-    public DoubleProperty paidAmountProperty() { return paidAmount; }
-    public DoubleProperty dueAmountProperty() { return dueAmount; }
-    public StringProperty periodProperty() { return period; }
+    // ================= GETTERS & SETTERS =================
 
-    // Getters
-    public int getId() { return id.get(); }
-    public String getEquipmentId() { return equipmentId.get(); }
-    public String getMachineName() { return machineName.get(); }
-    public String getPatientName() { return patientName.get(); }
-    public String getChallanNo() { return challanNo.get(); }
-    public String getStaffSeparation() { return staffSeparation.get(); }
-    public String getRentReceivedDate() { return rentReceivedDate.get(); }
-    public String getRentCollectionDate() { return rentCollectionDate.get(); }
-    public String getRentEndDate() { return rentEndDate.get(); }
-    public String getStatus() { return status.get(); }
-    public String getCollectedBy() { return collectedBy.get(); }
-    public double getAmount() { return amount.get(); }
-    public double getTotalAmount() { return totalAmount.get(); }
-    public double getPaidAmount() { return paidAmount.get(); }
-    public double getDueAmount() { return dueAmount.get(); }
-    public String getPeriod() { return period.get(); }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+    public String getChallanNo() {
+        return challanNo;
+    }
+
+    public void setChallanNo(String challanNo) {
+        this.challanNo = challanNo;
+    }
+
+
+    public int getMachineUnitId() {
+        return machineUnitId;
+    }
+
+    public void setMachineUnitId(int machineUnitId) {
+        this.machineUnitId = machineUnitId;
+    }
+
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+
+    public int getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(int createdBy) {
+        this.createdBy = createdBy;
+    }
+
+
+    public int getDeliveryPersonId() {
+        return deliveryPersonId;
+    }
+
+    public void setDeliveryPersonId(int deliveryPersonId) {
+        this.deliveryPersonId = deliveryPersonId;
+    }
+
+
+    public int getRentCollectorId() {
+        return rentCollectorId;
+    }
+
+    public void setRentCollectorId(int rentCollectorId) {
+        this.rentCollectorId = rentCollectorId;
+    }
+
+
+    public LocalDate getRentStartDate() {
+        return rentStartDate;
+    }
+
+    public void setRentStartDate(LocalDate rentStartDate) {
+        this.rentStartDate = rentStartDate;
+    }
+
+
+    public LocalDate getRentEndDate() {
+        return rentEndDate;
+    }
+
+    public void setRentEndDate(LocalDate rentEndDate) {
+        this.rentEndDate = rentEndDate;
+    }
+
+
+    public LocalDate getActualReturnDate() {
+        return actualReturnDate;
+    }
+
+    public void setActualReturnDate(LocalDate actualReturnDate) {
+        this.actualReturnDate = actualReturnDate;
+    }
+
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+
+    public int getDays() {
+        return days;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
+    }
+
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+
+    public double getPaidAmount() {
+        return paidAmount;
+    }
+
+    public void setPaidAmount(double paidAmount) {
+        this.paidAmount = paidAmount;
+    }
+
+
+    public double getDueAmount() {
+        return dueAmount;
+    }
+
+    public void setDueAmount(double dueAmount) {
+        this.dueAmount = dueAmount;
+    }
+
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+
+    public int getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(int isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 }

@@ -1,0 +1,1 @@
+ALTER TABLE rental DROP COLUMN rental_price_per_day;

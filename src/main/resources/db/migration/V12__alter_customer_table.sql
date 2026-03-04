@@ -1,0 +1,1 @@
+ALTER TABLE customer ADD COLUMN is_deleted INTEGER DEFAULT 0;

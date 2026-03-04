@@ -1,74 +1,93 @@
-/* ---------------------------
-   LEFT PANEL
-----------------------------*/
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #eef2f7, #dbe6f6);
+    -fx-font-family: "Segoe UI";
+}
+
+/* Main Card */
+.card-container {
+    -fx-background-color: white;
+    -fx-background-radius: 25px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 30, 0, 0, 10);
+    -fx-padding: 0;
+}
+
+/* LEFT PANEL */
 .left-form {
-    -fx-background-color: linear-gradient(to bottom right, #21365d, #294d90);
-    -fx-border-color: transparent;
+    -fx-background-color: linear-gradient(to bottom right, #1e3c72, #2a5298);
+    -fx-padding: 50px;
+    -fx-background-radius: 25px 0 0 25px;
 }
 
 .left-title {
-    -fx-font-size: 20px;
-    -fx-font-family: "Segoe UI";
+    -fx-font-size: 22px;
+    -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-alignment: center;
 }
 
-/* ---------------------------
-   RIGHT LOGIN FORM
-----------------------------*/
+/* RIGHT PANEL */
 .right-form {
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 12px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 4);
+    -fx-padding: 50px;
 }
 
-/* USER ICON */
-.user-icon {
-    -fx-fill: #21365d;
-}
-
-/* SIGN IN LABEL */
+/* SIGN IN */
 .signin-label {
-    -fx-font-family: "Berlin Sans FB";
     -fx-font-size: 28px;
-    -fx-text-fill: #21365d;
+    -fx-text-fill: #1e3c72;
     -fx-font-weight: bold;
 }
 
-/* TEXTFIELDS */
-.textfield {
-    -fx-background-color: #f4f4f4;
-    -fx-background-radius: 6px;
-    -fx-border-radius: 6px;
-    -fx-border-color: #ccc;
-    -fx-font-size: 14px;
-    -fx-padding: 6px 10px;
+/* INPUT CONTAINER */
+.input-box {
+    -fx-background-color: #f4f6f9;
+    -fx-padding: 8 15 8 15;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #dcdcdc;
+    -fx-alignment: CENTER_LEFT;
+    -fx-max-width: 260;
 }
+
+.input-box:hover {
+    -fx-border-color: #2a5298;
+}
+
+.textfield {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-font-size: 14px;
+    -fx-pref-width: 200;
+}
+
 .textfield:focused {
-    -fx-border-color: #294d90;
-    -fx-border-width: 1.5px;
-    -fx-background-color: #ffffff;
+    -fx-background-color: transparent;
 }
 
 /* LOGIN BUTTON */
 .login-btn {
-    -fx-background-color: linear-gradient(to top, #21365d, #294d90);
+    -fx-background-color: linear-gradient(to right, #1e3c72, #2a5298);
     -fx-text-fill: white;
-    -fx-background-radius: 10px;
-    -fx-font-size: 14px;
+    -fx-background-radius: 15;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 40 10 40;
+    -fx-cursor: hand;
+}
+
+.login-btn:hover {
+    -fx-background-color: linear-gradient(to right, #274b8f, #3a6bc0);
+}
+
+.close-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #555;
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-cursor: hand;
 }
-.login-btn:hover {
-    -fx-background-color: linear-gradient(to top, #284a86, #446ebb);
-}
 
-/* CLOSE BUTTON */
-.close {
-    -fx-background-color: transparent;
-    -fx-cursor: hand;
-}
-.close:hover {
-    -fx-background-color: #ff4757;
+.close-btn:hover {
     -fx-text-fill: white;
+    -fx-background-color: #ff4d4d;
+    -fx-background-radius: 50%;
 }

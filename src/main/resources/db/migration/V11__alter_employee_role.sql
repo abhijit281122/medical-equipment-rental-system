@@ -1,0 +1,1 @@
+ALTER TABLE employee_role ADD COLUMN is_deleted INTEGER DEFAULT 0;

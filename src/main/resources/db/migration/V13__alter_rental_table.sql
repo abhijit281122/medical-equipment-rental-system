@@ -1,1 +1,0 @@
-ALTER TABLE rental ADD COLUMN amount REAL DEFAULT 0;

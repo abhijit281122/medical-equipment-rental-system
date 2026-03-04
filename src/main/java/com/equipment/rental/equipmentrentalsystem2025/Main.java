@@ -18,7 +18,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(
                 Objects.requireNonNull(
-                        getClass().getResource("/com/equipment/rental/equipmentrentalsystem2025/login.fxml")
+                        getClass().getResource("/com/equipment/rental/equipmentrentalsystem2025/Login.fxml")
                 )
         );
 

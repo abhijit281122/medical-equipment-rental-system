@@ -1,453 +1,272 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" stylesheets="@../../../../styles/dashboard.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="allController.DashboardController">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.141"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="allController.DashboardController"
+            stylesheets="@../../../../styles/dashboard.css"
+            maxWidth="Infinity"
+            maxHeight="Infinity">
 
-    <children>
-        <BorderPane fx:id="rootPane" prefHeight="1000.0" prefWidth="1200.0">
+    <!-- ================= LEFT SIDEBAR ================= -->
+    <left>
+        <VBox prefWidth="250"
+              spacing="15"
+              styleClass="side-bar"
+              maxHeight="Infinity">
 
-            <!-- LEFT SIDEBAR -->
-            <left>
-                <VBox prefHeight="925.0" prefWidth="278.0" spacing="40.0" styleClass="side-bar">
+            <padding>
+                <Insets top="20" left="15" right="15" bottom="20"/>
+            </padding>
+
+            <!-- TITLE -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <ImageView fitHeight="40" fitWidth="40" preserveRatio="true">
+                    <image>
+                        <Image url="@/images/Heart-Monitor.png"/>
+                    </image>
+                </ImageView>
+                <Label text="Machine Rental System"
+                       wrapText="true"
+                       styleClass="side-title"/>
+            </HBox>
+
+            <Separator/>
+
+            <!-- MAIN NAV -->
+            <VBox spacing="8">
+
+                <Button fx:id="homeBtn" text="Home"
+                        styleClass="nav-btn"
+                        onAction="#openHomePage">
+                    <graphic>
+                        <ImageView fitHeight="18" fitWidth="18">
+                            <Image url="@/images/icons/home.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="machineMasterBtn" text="Machine Master"
+                        styleClass="nav-btn"
+                        onAction="#openMachineMasterPage">
+                    <graphic>
+                        <ImageView fitHeight="18" fitWidth="18">
+                            <Image url="@/images/icons/list.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="machineUnitBtn" text="Machine Unit"
+                        styleClass="nav-btn"
+                        onAction="#openMachineUnitPage">
+                    <graphic>
+                        <ImageView fitHeight="18" fitWidth="18">
+                            <Image url="@/images/icons/plus.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="rentMachineBtn" text="Rent Machine"
+                        styleClass="nav-btn"
+                        onAction="#openRentMachinePage">
+                    <graphic>
+                        <ImageView fitHeight="18" fitWidth="18">
+                            <Image url="@/images/icons/cart.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="employeeBtn" text="Employees"
+                        styleClass="nav-btn"
+                        onAction="#openEmployeePage">
+                    <graphic>
+                        <ImageView fitHeight="18" fitWidth="18">
+                            <Image url="@/images/icons/users.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="employeeRoleBtn" text="Employee Roles"
+                        styleClass="nav-btn"
+                        onAction="#openEmployeeRolePage">
+                    <graphic>
+                        <ImageView fitHeight="18" fitWidth="18">
+                            <Image url="@/images/icons/role.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="customerBtn" text="Customer / Patients"
+                        styleClass="nav-btn"
+                        onAction="#openCustomerPage">
+                    <graphic>
+                        <ImageView fitHeight="18" fitWidth="18">
+                            <Image url="@/images/icons/users.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+            </VBox>
+
+            <Separator/>
+
+            <!-- REPORTS SECTION -->
+            <Label text="Reports" styleClass="report-label"/>
+
+            <VBox spacing="8">
+                <Button fx:id="activeRentBtn" text="Active Rent" styleClass="nav-btn" onAction="#showActiveRentPage"/>
+                <Button fx:id="closedRentBtn" text="Closed Rent" styleClass="nav-btn" onAction="#showClosedRentPage"/>
+                <Button fx:id="dueDetailsBtn" text="Due Details (Period)" styleClass="nav-btn" onAction="#showDueRentPage"/>
+                <Button fx:id="dateWiseDueBtn" text="Date-wise Due List" styleClass="nav-btn"/>
+                <Button fx:id="weeklyCollectionBtn" text="Weekly Collection" styleClass="nav-btn" onAction="#showWeeklyCollectionPage"/>
+            </VBox>
+
+            <!-- THIS PUSHES CONTENT UP AND MAKES SIDEBAR FULL HEIGHT -->
+            <Region VBox.vgrow="ALWAYS"/>
+
+        </VBox>
+    </left>
+
+    <!-- ================= TOP BAR ================= -->
+    <top>
+        <HBox fx:id="topBar"
+              styleClass="top-bar"
+              prefHeight="60"
+              minHeight="60"
+              maxHeight="60"
+              alignment="CENTER_LEFT">
+
+            <padding>
+                <Insets top="0" bottom="0" left="20" right="20"/>
+            </padding>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label fx:id="usernameLabel"
+                   text="Welcome, Admin"
+                   styleClass="username-label"/>
+
+            <Button fx:id="logoutBtn"
+                    text="Logout"
+                    styleClass="logout-btn"/>
+        </HBox>
+    </top>
+
+    <!-- ================= CENTER CONTENT ================= -->
+    <center>
+        <StackPane fx:id="contentArea"
+                   styleClass="page-bg"
+                   maxWidth="Infinity"
+                   maxHeight="Infinity">
+
+            <!-- HOME PAGE -->
+            <VBox fx:id="homePage"
+                  spacing="20"
+                  alignment="TOP_CENTER"
+                  maxWidth="Infinity"
+                  maxHeight="Infinity">
+                <padding>
+                    <Insets top="20" bottom="20" left="20" right="20"/>
+                </padding>
+
+                <!-- ROW 1 -->
+                <GridPane hgap="16" vgap="16"
+                          maxWidth="Infinity"
+                          maxHeight="Infinity">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="33.33" hgrow="ALWAYS"/>
+                        <ColumnConstraints percentWidth="33.33" hgrow="ALWAYS"/>
+                        <ColumnConstraints percentWidth="33.33" hgrow="ALWAYS"/>
+                    </columnConstraints>
+
+                    <VBox styleClass="dashboard-card"
+                          alignment="CENTER"
+                          maxWidth="Infinity"
+                          onMouseClicked="#openTotalMachines">
+                        <Label text="Total Machines" styleClass="card-title"/>
+                        <Label fx:id="totalMachineLabel" text="0" styleClass="card-value"/>
+                    </VBox>
+
+                    <VBox styleClass="dashboard-card" alignment="CENTER" maxWidth="Infinity" onMouseClicked="#openAvailableMachines" GridPane.columnIndex="1">
+                        <Label text="Available Machines" styleClass="card-title"/>
+                        <Label fx:id="availableMachinesLabel" text="0" styleClass="card-value"/>
+                    </VBox>
+
+                    <VBox styleClass="dashboard-card" alignment="CENTER" maxWidth="Infinity" GridPane.columnIndex="2">
+                        <Label text="Total Rentals" styleClass="card-title"/>
+                        <Label fx:id="totalRentalsLabel" text="0" styleClass="card-value"/>
+                    </VBox>
+                </GridPane>
+
+                <!-- ROW 2 -->
+                <GridPane hgap="16" vgap="16"
+                          maxWidth="Infinity"
+                          maxHeight="Infinity">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="33.33" hgrow="ALWAYS"/>
+                        <ColumnConstraints percentWidth="33.33" hgrow="ALWAYS"/>
+                        <ColumnConstraints percentWidth="33.33" hgrow="ALWAYS"/>
+                    </columnConstraints>
+
                     <children>
-                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="side-title-bar">
-                            <children>
-                                <ImageView fx:id="logoImage" fitHeight="40" fitWidth="40">
-                                    <image>
-                                        <Image url="@../../../../images/Heart-Monitor.png" />
-                                    </image>
-                                </ImageView>
-                                <Label ellipsisString="" prefHeight="80.0" prefWidth="147.0" styleClass="side-title" text="Machine Rental System" textAlignment="CENTER" wrapText="true" />
-                            </children>
-                        </HBox>
-
-                        <VBox alignment="TOP_LEFT" prefHeight="628.0" prefWidth="238.0" spacing="12">
-                            <padding>
-                                <Insets bottom="20" left="20" right="20" top="20" />
-                            </padding>
-
-                            <!-- main navigation -->
-                            <children>
-                                <Button fx:id="homeBtn" styleClass="nav-btn" text="Home">
-                                    <graphic>
-                                        <ImageView fitHeight="18" fitWidth="18" preserveRatio="true" styleClass="white-icon">
-                                            <image>
-                                                <Image url="@/images/icons/home.png"/>
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-
-                                </Button>
-
-                                <Button fx:id="equipmentListBtn" onAction="#showEquipmentList" styleClass="nav-btn" text="Machine List">
-                                    <graphic>
-                                        <ImageView fitHeight="18" fitWidth="18" preserveRatio="true" styleClass="white-icon">
-                                            <image>
-                                                <Image url="@/images/icons/list.png"/>
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </Button>
-
-                                <Button fx:id="equipmentAddBtn" onAction="#showEquipmentAdd" styleClass="nav-btn" text="Add Machines">
-                                    <graphic>
-                                        <ImageView fitHeight="18" fitWidth="18" preserveRatio="true" styleClass="white-icon">
-                                            <image>
-                                                <Image url="@/images/icons/plus.png"/>
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </Button>
-
-
-                                <Button fx:id="rentEquipmentBtn" onAction="#onRentEquipmentBtnClick" styleClass="nav-btn" text="Rent Machine">
-                                    <graphic>
-                                        <ImageView fitHeight="18" fitWidth="18" preserveRatio="true">
-                                            <image>
-                                                <Image url="@/images/icons/cart.png"/>
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </Button>
-
-                                <Button fx:id="employeeBtn" onAction="#openEmployeePage" styleClass="nav-btn" text="Employees">
-                                    <graphic>
-                                        <ImageView fitHeight="18" fitWidth="18" preserveRatio="true" styleClass="white-icon">
-                                            <image>
-                                                <Image url="@/images/icons/users.png"/>
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </Button>
-
-
-                                <Separator />
-
-                                <!-- Reports section -->
-                                <Label style="-fx-text-fill:#dbe7ff; -fx-padding:8 0 0 8; -fx-font-weight:bold;" text="Reports" />
-
-                                <Button fx:id="activeRentBtn"
-                                        onAction="#showActiveRentPage"
-                                        styleClass="nav-btn"
-                                        text="Active Rent">
-
-                                    <graphic>
-                                        <ImageView fitHeight="18" fitWidth="18" preserveRatio="true" styleClass="white-icon">
-                                            <image>
-                                                <Image url="@/images/icons/play.png"/>
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </Button>
-
-                                <Button fx:id="closedRentBtn"
-                                        onAction="#showClosedRentPage"
-                                        styleClass="nav-btn"
-                                        text="Closed Rent">
-
-                                    <graphic>
-                                        <ImageView fitHeight="18" fitWidth="18" preserveRatio="true" styleClass="white-icon">
-                                            <image>
-                                                <Image url="@/images/icons/stop.png"/>
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </Button>
-
-                                <Button fx:id="dueDetailsBtn" onAction="#showDueRentPage" styleClass="nav-btn" text="Due Details (Period)">
-                                    <graphic>
-                                        <ImageView fitHeight="18" fitWidth="18" preserveRatio="true" styleClass="white-icon">
-                                            <image>
-                                                <Image url="@/images/icons/warning.png"/>
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </Button>
-
-                                <Button fx:id="dateWiseDueBtn" styleClass="nav-btn" text="Date-wise Due List">
-                                    <graphic>
-                                        <ImageView fitHeight="18" fitWidth="18" preserveRatio="true" styleClass="white-icon">
-                                            <image>
-                                                <Image url="@/images/icons/calendar.png"/>
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </Button>
-
-                                <Button fx:id="weeklyCollectionBtn"
-                                        onAction="#showWeeklyCollectionPage"
-                                        styleClass="nav-btn"
-                                        text="Weekly Collection">
-                                    <graphic>
-                                        <ImageView fitHeight="18" fitWidth="18" preserveRatio="true" styleClass="white-icon">
-                                            <image>
-                                                <Image url="@/images/icons/line-chart.png"/>
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </Button>
-
-                            </children>
+                        <VBox styleClass="dashboard-card" alignment="CENTER" maxWidth="Infinity" onMouseClicked="#openActiveRents">
+                            <Label text="Active Rent" styleClass="card-title"/>
+                            <Label fx:id="activeRentsLabel" text="0" styleClass="card-value"/>
                         </VBox>
 
+                        <VBox styleClass="dashboard-card" alignment="CENTER" maxWidth="Infinity" onMouseClicked="#openClosedRents" GridPane.columnIndex="1">
+                            <Label text="Closed Rent" styleClass="card-title"/>
+                            <Label fx:id="closedRentsLabel" text="0" styleClass="card-value"/>
+                        </VBox>
+
+                        <VBox styleClass="dashboard-card" alignment="CENTER" maxWidth="Infinity" onMouseClicked="#openDueRents" GridPane.columnIndex="2">
+                            <Label text="Due With Period" styleClass="card-title"/>
+                            <Label fx:id="dueWithinPeriodLabel" text="0" styleClass="card-value"/>
+                        </VBox>
                     </children>
-                </VBox>
-            </left>
+                </GridPane>
 
-            <!-- TOP BAR -->
-            <top>
-                <HBox alignment="CENTER_RIGHT" spacing="20" styleClass="top-bar">
-                    <padding>
-                        <Insets bottom="15" left="30" right="30" top="15" />
-                    </padding>
-                    <children>
-                        <Label fx:id="usernameLabel" styleClass="username-label" text="Welcome, Admin" />
-                        <Button fx:id="logoutBtn" styleClass="logout-btn" text="Logout" />
-                    </children>
-                </HBox>
-            </top>
+                <!-- ROW 3 -->
+                <GridPane hgap="16" vgap="16"
+                          maxWidth="Infinity"
+                          maxHeight="Infinity">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50" hgrow="ALWAYS"/>
+                        <ColumnConstraints percentWidth="50" hgrow="ALWAYS"/>
+                    </columnConstraints>
 
-            <!-- MAIN CONTENT -->
-            <center>
-                <StackPane fx:id="mainContent" style="-fx-background-color: #f4f4f4;">
-                    <children>
+                    <VBox styleClass="dashboard-card" alignment="CENTER" maxWidth="Infinity">
+                        <Label text="Date-wise Due" styleClass="card-title"/>
+                        <Label fx:id="dateWiseDueLabel" text="0" styleClass="card-value"/>
+                    </VBox>
 
-                        <!-- HOME PAGE -->
-                        <VBox fx:id="homePage" alignment="TOP_CENTER" spacing="20">
-                            <padding>
-                                <Insets bottom="20" left="20" right="20" top="20" />
-                            </padding>
+                    <VBox styleClass="dashboard-card" alignment="CENTER" maxWidth="Infinity" GridPane.columnIndex="1">
+                        <Label text="Weekly Collection" styleClass="card-title"/>
+                        <Label fx:id="weeklyCollectionLabel" text="0" styleClass="card-value"/>
+                    </VBox>
+                </GridPane>
 
-                            <!-- CARDS grid: first row (summary) -->
-                            <GridPane hgap="16" vgap="16">
-                                <columnConstraints>
-                                    <ColumnConstraints percentWidth="33" />
-                                    <ColumnConstraints percentWidth="33" />
-                                    <ColumnConstraints percentWidth="33" />
-                                </columnConstraints>
+                <!-- CHART -->
+                <BarChart fx:id="machineChart"
+                          VBox.vgrow="ALWAYS"
+                          maxWidth="Infinity"
+                          styleClass="chart">
+                    <xAxis>
+                        <CategoryAxis label="Machines"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis label="Units"/>
+                    </yAxis>
+                </BarChart>
 
-                                <children>
-                                    <VBox alignment="CENTER" styleClass="dashboard-card" GridPane.columnIndex="0">
-                                        <children>
-                                            <ImageView fitHeight="48" fitWidth="48" preserveRatio="true">
-                                                <image>
-                                                    <Image url="@/images/icons/cube.png"/>
-                                                </image>
-                                            </ImageView>
+            </VBox>
 
-                                            <Label styleClass="card-title" text="Total Machines" />
-                                            <Label fx:id="totalEquipmentLabel" styleClass="card-value" text="0" />
-                                        </children>
-                                    </VBox>
+        </StackPane>
+    </center>
 
-                                    <VBox alignment="CENTER" styleClass="dashboard-card" GridPane.columnIndex="1">
-                                        <children>
-                                            <ImageView fitHeight="48" fitWidth="48" preserveRatio="true">
-                                                <image>
-                                                    <Image url="@/images/icons/check.png"/>
-                                                </image>
-                                            </ImageView>
-
-                                            <Label styleClass="card-title" text="Available Machines" />
-                                            <Label fx:id="availableEquipmentLabel" styleClass="card-value" text="0" />
-                                        </children>
-                                    </VBox>
-
-                                    <VBox alignment="CENTER" styleClass="dashboard-card" GridPane.columnIndex="2">
-                                        <children>
-                                            <ImageView fitHeight="48" fitWidth="48" preserveRatio="true">
-                                                <image>
-                                                    <Image url="@/images/icons/list.png"/>
-                                                </image>
-                                            </ImageView>
-
-                                            <Label styleClass="card-title" text="Total Rentals" />
-                                            <Label fx:id="totalRentalsLabel" styleClass="card-value" text="0" />
-                                        </children>
-                                    </VBox>
-                                </children>
-                                <rowConstraints>
-                                    <RowConstraints />
-                                </rowConstraints>
-                            </GridPane>
-
-                            <!-- second row: report summary cards -->
-                            <GridPane hgap="16" vgap="16">
-                                <columnConstraints>
-                                    <ColumnConstraints percentWidth="33" />
-                                    <ColumnConstraints percentWidth="33" />
-                                    <ColumnConstraints percentWidth="33" />
-                                </columnConstraints>
-
-                                <children>
-                                    <VBox alignment="CENTER" styleClass="dashboard-card" GridPane.columnIndex="0">
-                                        <children>
-                                            <ImageView fitHeight="48" fitWidth="48" preserveRatio="true">
-                                                <image>
-                                                    <Image url="@/images/icons/play.png"/>
-                                                </image>
-                                            </ImageView>
-
-                                            <Label styleClass="card-title" text="Active Rent" />
-                                            <Label fx:id="activeRentsLabel" styleClass="card-value" text="0" />
-                                        </children>
-                                    </VBox>
-
-                                    <VBox alignment="CENTER" styleClass="dashboard-card" GridPane.columnIndex="1">
-                                        <children>
-                                            <ImageView fitHeight="48" fitWidth="48" preserveRatio="true">
-                                                <image>
-                                                    <Image url="@/images/icons/stop.png"/>
-                                                </image>
-                                            </ImageView>
-
-                                            <Label styleClass="card-title" text="Closed Rent" />
-                                            <Label fx:id="closedRentsLabel" styleClass="card-value" text="0" />
-                                        </children>
-                                    </VBox>
-
-                                    <VBox alignment="CENTER" styleClass="dashboard-card" GridPane.columnIndex="2">
-                                        <children>
-                                            <ImageView fitHeight="48" fitWidth="48" preserveRatio="true">
-                                                <image>
-                                                    <Image url="@/images/icons/warning.png"/>
-                                                </image>
-                                            </ImageView>
-
-                                            <Label styleClass="card-title" text="Due With Period" />
-                                            <Label fx:id="dueWithinPeriodLabel" styleClass="card-value" text="0" />
-                                        </children>
-                                    </VBox>
-
-                                </children>
-                                <rowConstraints>
-                                    <RowConstraints />
-                                </rowConstraints>
-                            </GridPane>
-
-                            <!-- third row -->
-                            <GridPane hgap="16" vgap="16">
-                                <columnConstraints>
-                                    <ColumnConstraints percentWidth="33" />
-                                    <ColumnConstraints percentWidth="33" />
-                                    <ColumnConstraints percentWidth="33" />
-                                </columnConstraints>
-
-                                <children>
-                                    <VBox alignment="CENTER" styleClass="dashboard-card" GridPane.columnIndex="0">
-                                        <children>
-                                            <ImageView fitHeight="48" fitWidth="48" preserveRatio="true">
-                                                <image>
-                                                    <Image url="@/images/icons/calendar.png"/>
-                                                </image>
-                                            </ImageView>
-
-                                            <Label styleClass="card-title" text="Date-wise Due" />
-                                            <Label fx:id="dateWiseDueLabel" styleClass="card-value" text="0" />
-                                        </children>
-                                    </VBox>
-
-                                    <VBox alignment="CENTER" styleClass="dashboard-card" GridPane.columnIndex="1">
-                                        <children>
-                                            <ImageView fitHeight="48" fitWidth="48" preserveRatio="true">
-                                                <image>
-                                                    <Image url="@/images/icons/line-chart.png"/>
-                                                </image>
-                                            </ImageView>
-
-                                            <Label styleClass="card-title" text="Weekly Collection" />
-                                            <Label fx:id="weeklyCollectionLabel" styleClass="card-value" text="0" />
-                                        </children>
-                                    </VBox>
-                                </children>
-                                <rowConstraints>
-                                    <RowConstraints />
-                                </rowConstraints>
-                            </GridPane>
-
-                            <!-- CHART -->
-                            <BarChart fx:id="equipmentChart" prefHeight="280" prefWidth="900" styleClass="chart">
-                                <xAxis>
-                                    <CategoryAxis label="Equipment" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="Units" />
-                                </yAxis>
-                            </BarChart>
-
-                        </VBox>
-
-                        <!-- EQUIPMENT LIST -->
-                        <VBox fx:id="equipmentListPage" visible="false">
-                            <fx:include source="EquipmentListPage.fxml" />
-                        </VBox>
-
-                        <!-- ADD / EDIT EQUIPMENT -->
-                        <VBox fx:id="equipmentAddPage" visible="false">
-                            <fx:include source="EquipmentForm.fxml" />
-                        </VBox>
-
-                        <!-- AVAILABLE EQUIPMENT PAGE -->
-                        <VBox fx:id="availableEquipmentPage" alignment="TOP_CENTER" spacing="10" visible="false">
-                            <padding>
-                                <Insets bottom="20" left="20" right="20" top="20" />
-                            </padding>
-
-                            <HBox spacing="10">
-                                <TextField fx:id="equipmentSearchField" promptText="Search Equipment..." />
-                                <!-- CRUD buttons could be placed here -->
-                            </HBox>
-
-                            <TableView fx:id="equipmentTable" prefHeight="500" />
-                        </VBox>
-
-                        <!-- RENT EQUIPMENT PAGE -->
-                        <VBox fx:id="rentEquipmentPage" alignment="TOP_CENTER" spacing="10" visible="false">
-                            <fx:include source="RentEquipmentPage.fxml" />
-                        </VBox>
-
-                        <!-- EMPLOYEE PAGE -->
-                        <VBox fx:id="employeePage" visible="false">
-                            <fx:include source="EmployeePage.fxml"/>
-                        </VBox>
-
-
-                        <!-- Active Rent Page -->
-                        <VBox fx:id="activeRentPage" alignment="TOP_CENTER" spacing="10" visible="false">
-                            <padding>
-                                <Insets bottom="20" left="20" right="20" top="20" />
-                            </padding>
-                            <Label style="-fx-font-size:18px; -fx-text-fill:#21365d;" text="Active Rent" />
-                            <TableView fx:id="activeRentTable" prefHeight="520" />
-                        </VBox>
-
-                        <!-- Closed Rent Page -->
-                        <VBox fx:id="closedRentPage" alignment="TOP_CENTER" spacing="10" visible="false">
-                            <padding>
-                                <Insets bottom="20" left="20" right="20" top="20" />
-                            </padding>
-                            <Label style="-fx-font-size:18px; -fx-text-fill:#21365d;" text="Closed Rent" />
-                            <TableView fx:id="closedRentTable" prefHeight="520" />
-                        </VBox>
-
-                        <!-- Due Details Page -->
-                        <VBox fx:id="dueRentPage" alignment="TOP_CENTER" spacing="10" visible="false">
-                            <padding>
-                                <Insets bottom="20" left="20" right="20" top="20" />
-                            </padding>
-                            <Label style="-fx-font-size:18px; -fx-text-fill:#21365d;" text="Due Details (with due period)" />
-                            <TableView fx:id="dueRentTable" prefHeight="520" />
-                        </VBox>
-
-                        <!-- Date-wise Due Page -->
-                        <VBox fx:id="dateWiseDuePage" alignment="TOP_CENTER" spacing="10" visible="false">
-                            <padding>
-                                <Insets bottom="20" left="20" right="20" top="20" />
-                            </padding>
-                            <Label style="-fx-font-size:18px; -fx-text-fill:#21365d;" text="Date-wise Due List" />
-                            <TableView fx:id="dateWiseDueTable" prefHeight="520" />
-                        </VBox>
-
-                        <!-- Weekly Collection Page -->
-                        <VBox fx:id="weeklyCollectionPage" alignment="TOP_CENTER" spacing="10" visible="false">
-                            <padding>
-                                <Insets bottom="20" left="20" right="20" top="20" />
-                            </padding>
-                            <Label style="-fx-font-size:18px; -fx-text-fill:#21365d;" text="Weekly Collection (Actual)" />
-                            <TableView fx:id="weeklyCollectionTable" prefHeight="360" />
-                            <BarChart fx:id="weeklyCollectionChart" prefHeight="160" prefWidth="800">
-                                <xAxis>
-                                    <CategoryAxis label="Date" />
-                                </xAxis>
-                                <yAxis>
-                                    <NumberAxis label="Collected" />
-                                </yAxis>
-                            </BarChart>
-                        </VBox>
-
-                    </children>
-                </StackPane>
-            </center>
-
-        </BorderPane>
-    </children>
-</AnchorPane>
+</BorderPane>
