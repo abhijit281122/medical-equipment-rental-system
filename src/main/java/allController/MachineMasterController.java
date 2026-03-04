@@ -29,6 +29,8 @@ public class MachineMasterController {
     private Button clearBtn;
     @FXML
     private Button deleteBtn;
+    @FXML
+    private Button editBtn;
 
     @FXML
     private TableView<Machine> machineTable;
@@ -42,6 +44,8 @@ public class MachineMasterController {
     private TableColumn<Machine, String> colCategory;
     @FXML
     private TableColumn<Machine, String> colManufacturer;
+    @FXML
+    private TableColumn<Machine, String> colDescription;
 
     @FXML
     private Pagination pagination;
@@ -70,10 +74,12 @@ public class MachineMasterController {
         colName.setCellValueFactory(new PropertyValueFactory<>("machineName"));
         colCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
         colManufacturer.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
+        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
 
         loadPagination();
 
-        machineTable.setOnMouseClicked(e -> loadSelectedMachine());
+        machineTable.setOnMouseClicked(e -> loadSelectedMachineData());
+        editBtn.setOnAction(e -> enableEditMode());
 
         saveBtn.setOnAction(e -> saveOrUpdateMachine());
         deleteBtn.setOnAction(e -> deleteMachine());
@@ -112,7 +118,8 @@ public class MachineMasterController {
                         rs.getString("machine_code"),
                         rs.getString("machine_name"),
                         rs.getString("category"),
-                        rs.getString("manufacturer")
+                        rs.getString("manufacturer"),
+                        rs.getString("description")
                 ));
             }
 
@@ -139,7 +146,18 @@ public class MachineMasterController {
         if (!validateForm()) return;
 
         if (isUpdateMode) {
-            updateMachine();
+
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setTitle("Confirm Update");
+            confirm.setHeaderText("Edit Machine");
+            confirm.setContentText("Are you sure you want to update this machine?");
+
+            if (confirm.showAndWait().get() == ButtonType.OK) {
+                updateMachine();
+            } else {
+                return; // User cancelled
+            }
+
         } else {
             insertMachine();
         }
@@ -207,20 +225,55 @@ public class MachineMasterController {
     }
 
     // ================= LOAD SELECTED =================
-    private void loadSelectedMachine() {
+    private void loadSelectedMachineData() {
 
         Machine selected = machineTable.getSelectionModel().getSelectedItem();
         if (selected == null) return;
 
         selectedMachineId = selected.getId();
-        isUpdateMode = true;
 
         machineCodeField.setText(selected.getMachineCode());
         nameField.setText(selected.getMachineName());
         categoryField.setText(selected.getCategory());
         manufacturerField.setText(selected.getManufacturer());
+        descriptionField.setText(selected.getDescription());
 
         loadStockSummary(selectedMachineId);
+
+        // Disable editing until Edit button clicked
+        setFormEditable(false);
+    }
+
+    private void enableEditMode() {
+
+        Machine selected = machineTable.getSelectionModel().getSelectedItem();
+
+        if (selected == null) {
+            showAlert(Alert.AlertType.WARNING, "Warning", "Please select a machine first.");
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Confirm Edit");
+        confirm.setHeaderText("Edit Machine");
+        confirm.setContentText("Do you want to edit this machine?");
+
+        if (confirm.showAndWait().get() == ButtonType.OK) {
+
+            isUpdateMode = true;
+            setFormEditable(true);
+            saveBtn.setText("Update Machine");
+
+        }
+    }
+
+    private void setFormEditable(boolean status) {
+
+        machineCodeField.setEditable(status);
+        nameField.setEditable(status);
+        categoryField.setEditable(status);
+        manufacturerField.setEditable(status);
+        descriptionField.setEditable(status);
     }
 
     // ================= STOCK SUMMARY =================
@@ -265,13 +318,18 @@ public class MachineMasterController {
     }
 
     private void clearForm() {
+
         machineCodeField.clear();
         nameField.clear();
         categoryField.clear();
         manufacturerField.clear();
         descriptionField.clear();
+
         isUpdateMode = false;
         selectedMachineId = -1;
+
+        saveBtn.setText("Save Machine");
+        setFormEditable(true);
     }
 
     private void showAlert(Alert.AlertType type, String title, String msg) {

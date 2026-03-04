@@ -117,6 +117,7 @@
                         <TableColumn fx:id="colName" text="Name" />
                         <TableColumn fx:id="colCategory" text="Category" />
                         <TableColumn fx:id="colManufacturer" text="Manufacturer" />
+                        <TableColumn fx:id="colDescription" text="Description" />
                     </columns>
                 </TableView>
 

@@ -19,13 +19,15 @@ public class Machine {
                    String machineCode,
                    String machineName,
                    String category,
-                   String manufacturer) {
+                   String manufacturer,
+                   String description) {
 
         this.id.set(id);
         this.machineCode.set(machineCode);
         this.machineName.set(machineName);
         this.category.set(category);
         this.manufacturer.set(manufacturer);
+        this.description.set(description);
     }
 
     // ================= PROPERTIES =================
